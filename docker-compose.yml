@@ -1,0 +1,27 @@
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      args:
+        target:
+    image: sample-peertesting
+    container_name: sample-peertesting
+    ports:
+      - "7777:7777"
+    environment:
+      - DD_AGENT_HOST=agent
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_ENV=peertesting-blocking-anna
+      - DD_APPSEC_ENABLED=true
+    volumes:
+      - ./logs:/var/log/datadog/dotnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - "agent"
+  agent:
+    image: datadog/agent
+    container_name: agent-peertesting
+volumes:
+  logs:
