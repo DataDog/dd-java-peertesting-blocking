@@ -22,9 +22,17 @@ For now, blocking is active on every rule, only request that don't trigger a sec
 ### curl commands
 
 ```console
-robert@ROBERT-LAPTOP:~
+
 $ curl http://localhost:7777
 Hello World!robert@ROBERT-LAPTOP:~
+
 $ curl http://localhost:7777/?q=database\(\)
+{"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
+
+$ curl -H "Accept: text/html" http://localhost:7777/?q=database\(\)
+<!-- Sorry, you’ve been blocked -->
+<!DOCTYPE html>
+
+$ curl -H "Accept: */*" http://localhost:7777/?q=database\(\)
 {"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
 ```

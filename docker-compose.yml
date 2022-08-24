@@ -13,6 +13,10 @@ services:
       - DD_AGENT_HOST=agent
       - DD_TRACE_AGENT_PORT=8126
       - DD_ENV=peertesting-blocking-anna
+      - DD_APPSEC_ENABLED=true
+      - DD_TRACE_DEBUG
+      - DD_APPSEC_HTTP_BLOCKED_TEMPLATE_HTML
+      - DD_APPSEC_HTTP_BLOCKED_TEMPLATE_JSON
     volumes:
       - ./logs:/var/log/datadog/dotnet
     extra_hosts:
