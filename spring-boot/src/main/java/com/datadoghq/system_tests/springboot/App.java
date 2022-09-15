@@ -51,8 +51,6 @@ import java.util.stream.Collectors;
 @EnableAutoConfiguration
 public class App {
 
-    CassandraConnector cassandra;
-
     @RequestMapping("/")
     String home() {
         return "Hello World!";
@@ -170,18 +168,6 @@ public class App {
         return "hi HTTP";
     }
 
-    @RequestMapping("/trace/cassandra")
-    String traceCassandra() {
-        final Span span = GlobalTracer.get().activeSpan();
-        if (span != null) {
-            span.setTag("appsec.event", true);
-        }
-
-        cassandra.getSession().execute("SELECT * FROM \"table\" WHERE id = 1").all();
-
-        return "hi Cassandra";
-    }
-
     @RequestMapping("/trace/ognl")
     String traceOGNL() {
         final Span span = GlobalTracer.get().activeSpan();
@@ -263,8 +249,6 @@ public class App {
     @EventListener(ApplicationReadyEvent.class)
     @Trace
     public void init() {
-        cassandra = new CassandraConnector();
-        cassandra.setup();
         System.out.println("Initialized");
     }
 
@@ -282,43 +266,4 @@ public class App {
         SpringApplication.run(App.class, args);
     }
 
-}
-
-class CassandraConnector {
-    CqlSession session;
-
-    public void setup() {
-        boolean successInit = false;
-        int retry = 1000;
-        while (!successInit && retry-- > 0)
-        {
-            try {
-                TimeUnit.MILLISECONDS.sleep(500);
-                session = CqlSession.builder()
-                        .addContactPoint(new InetSocketAddress("cassandra", 9042))
-                        .withLocalDatacenter("datacenter1")
-                        .build();
-                successInit = true;
-            } catch (Exception ignored) {
-            }
-        }
-
-        // Create KeySpace
-        session.execute("CREATE KEYSPACE IF NOT EXISTS \"testDB\" WITH replication = {'class':'SimpleStrategy','replication_factor':1};");
-
-        // Create table
-        session.execute("USE \"testDB\";");
-        session.execute("DROP TABLE IF EXISTS \"table\";");
-        session.execute("CREATE TABLE \"table\" (id int PRIMARY KEY, title text, subject text);");
-
-        // Insert data
-        session.execute("INSERT INTO \"table\"(id, title, subject) VALUES (1, 'book1', 'subject1');");
-        session.execute("INSERT INTO \"table\"(id, title, subject) VALUES (2, 'book2', 'subject2');");
-        session.execute("INSERT INTO \"table\"(id, title, subject) VALUES (3, 'book3', 'subject3');");
-        session.execute("INSERT INTO \"table\"(id, title, subject) VALUES (4, 'book4', 'subject4');");
-    }
-
-    public CqlSession getSession() {
-        return this.session;
-    }
 }

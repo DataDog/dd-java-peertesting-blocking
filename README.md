@@ -1,51 +1,36 @@
-# Usage
+# Java Peertesting Setup
 
-Docker, as well as docker compose, is needed.
-Clone this repository.
-A docker compose file is provided to make it simple to run the dotnet test app. So from your local folder:
+## Requirements
 
-## Using docker-compose
+- Docker
+- Docker compose
 
-```console
-$ DD_API_KEY=<yourkey> docker-compose up
+## Clone this repository.
+A docker compose file is provided to make it simple to run the java test app.
+
+If your docker containers are running on aarch64, please add `arm64` after target in the docker compose:
+```code
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      args:
+        target: arm64
 ```
 
-Alternatively, you can add custom response templates via environment variables.
+Then, you will need:
+    - a `DD_API_KEY` to create [here](https://dd.datad0g.com/organization-settings/api-keys)
+    - a `DD_REMOTE_CONFIGURATION_KEY` to create [here](https://dd.datad0g.com/organization-settings/remote-config)
 
+Then:
 ```console
-$  DD_APPSEC_HTTP_BLOCKED_TEMPLATE_HTML=/app/blocked.html DD_APPSEC_HTTP_BLOCKED_TEMPLATE_JSON=/app/blocked.json DD_API_KEY=<yourkey> docker-compose up
+export DD_API_KEY=YOUR_API_KEY  # replace with your key if created from the interface
+export DD_REMOTE_CONFIGURATION_KEY=YOUR_REMOTE_CONFIGURATION_KEY  # replace with your key if created from the interface
+docker-compose up
 ```
 
-### Environment variables
-
-Env variables are defined in the docker-compose, feel free to choose your own configuration,
-it can be useful to change DD_ENV to make it something recognizable to you
-
-## Attacking the app
-
-You should be able to attack the app on port 7777 of your machine.
-For now, blocking is active on every rule, only request that don't trigger a security alert will pass.
-
-### curl commands
-
+## curl commands
 ```console
-
-$ curl http://localhost:7777
-Hello World!robert@ROBERT-LAPTOP:~
-
-$ curl http://localhost:7777/?q=database\(\)
-{"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
-
-$ curl -H "Accept: text/html" http://localhost:7777/?q=database\(\)
-<!-- Sorry, you’ve been blocked -->
-<!DOCTYPE html>
-
-$ curl -H "Accept: */*" http://localhost:7777/?q=database\(\)
-{"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
-
-$ curl -H "Accept: application/*" http://localhost:7777/?q=database\(\)
-{"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
-
-$ curl -H "Accept: application/json" http://localhost:7777/?q=database\(\)
-{"errors": [{"title": "Access denied", "detail": "Your request has been blocked and was not executed."}]}
+curl -v 'http://localhost:7777' -H "X-Forwarded-For: 167.172.130.2"
 ```
