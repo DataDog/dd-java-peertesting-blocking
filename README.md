@@ -24,13 +24,13 @@ Then, you will need to set the following environment variables:
  * `DD_REMOTE_CONFIGURATION_KEY` to create [here](https://dd.datad0g.com/organization-settings/remote-config)
 
 Then:
-```console
+```shell
 export DD_API_KEY=YOUR_API_KEY  # replace with your key if created from the interface
 export DD_REMOTE_CONFIGURATION_KEY=YOUR_REMOTE_CONFIGURATION_KEY  # replace with your key if created from the interface
 docker-compose up
 ```
 
 ## curl commands
-```console
+```shell
 curl -v 'http://localhost:7777' -H "X-Forwarded-For: 167.172.130.2"
 ```
