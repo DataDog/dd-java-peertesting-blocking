@@ -19,9 +19,9 @@ services:
         target: arm64
 ```
 
-Then, you will need:
-    - a `DD_API_KEY` to create [here](https://dd.datad0g.com/organization-settings/api-keys)
-    - a `DD_REMOTE_CONFIGURATION_KEY` to create [here](https://dd.datad0g.com/organization-settings/remote-config)
+Then, you will need to set the following environment variables:
+ * `DD_API_KEY` to create [here](https://dd.datad0g.com/organization-settings/api-keys)
+ * `DD_REMOTE_CONFIGURATION_KEY` to create [here](https://dd.datad0g.com/organization-settings/remote-config)
 
 Then:
 ```console
