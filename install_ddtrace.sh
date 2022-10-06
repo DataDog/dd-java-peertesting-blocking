@@ -5,7 +5,7 @@ set -eu
 mkdir /dd-tracer
 
 if [ $(ls /binaries/dd-java-agent*.jar | wc -l) = 0 ]; then
-    BUILD_URL="https://output.circle-artifacts.com/output/job/cb79c07f-7990-4b7a-b722-c376c014840f/artifacts/0/libs/dd-java-agent-0.109.0-SNAPSHOT.jar"
+    BUILD_URL="https://output.circle-artifacts.com/output/job/bbd728fc-515d-4c4b-a778-8fa331e50721/artifacts/0/libs/dd-java-agent-0.111.0-SNAPSHOT.jar"
     echo "install from Github release: $BUILD_URL"
     curl  -Lf -o /dd-tracer/dd-java-agent.jar $BUILD_URL
 
