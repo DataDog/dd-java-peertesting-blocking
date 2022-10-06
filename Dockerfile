@@ -5,14 +5,14 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY install_ddtrace.sh binaries* /binaries/
-RUN /binaries/install_ddtrace.sh
-
 COPY spring-boot/pom.xml .
 RUN mkdir /maven && mvn -Dmaven.repo.local=/maven -B dependency:go-offline
 
 COPY spring-boot/src ./src
 RUN mvn -Dmaven.repo.local=/maven package
+
+COPY install_ddtrace.sh binaries/* /binaries/
+RUN /binaries/install_ddtrace.sh
 
 FROM adoptopenjdk:11-jre-hotspot
 
