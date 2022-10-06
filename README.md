@@ -70,7 +70,9 @@ $ docker compose up
 
 1. Create a signal on staging (change the IP to avoid conflicts with other testers)
 ```console
-repeat 100 curl -v 'http://localhost:7777' -A "Arachni/v1" -H "X-Forwarded-For: 167.172.130.4"
+for i in $(seq 100); do
+    curl -v 'http://localhost:7777' -A "Arachni/v1" -H "X-Forwarded-For: 167.172.130.4"
+done
 ```
 2. Find the signal in the UI ([link](https://dd.datad0g.com/security?query=%40workflow.rule.type%3A%22Application%20Security%22&column=time&order=desc&product=appsec&view=signal)), block the ip
 ![Screenshot 2022-09-07 122337](https://user-images.githubusercontent.com/8353486/188855593-852682dc-edf8-427b-8044-2192881c9708.png)
