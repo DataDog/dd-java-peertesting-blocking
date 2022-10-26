@@ -5,7 +5,7 @@ set -eu
 mkdir /dd-tracer
 
 if [ $(ls /binaries/dd-java-agent*.jar | wc -l) = 0 ]; then
-    BUILD_URL="https://repo1.maven.org/maven2/com/datadoghq/dd-java-agent/0.111.0/dd-java-agent-0.111.0.jar"
+    BUILD_URL="https://github.com/DataDog/dd-trace-java/releases/latest/download/dd-java-agent.jar"
     echo "install from Github release: $BUILD_URL"
     curl  -Lf -o /dd-tracer/dd-java-agent.jar $BUILD_URL
 
