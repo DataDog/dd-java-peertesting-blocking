@@ -8,21 +8,25 @@ services:
     ports:
       - "7777:7777"
     environment:
+      # Set to enable AppSec since the beginning.
+      # - DD_APPSEC_ENABLED=true
+      # Comment out to test remote config default.
+      - DD_REMOTE_CONFIG_ENABLED=true
       - DD_AGENT_HOST=agent
       - DD_TRACE_AGENT_PORT=8126
-      - DD_ENV=peertesting-blocking-java
-      - DD_APPSEC_ENABLED=true
-      - DD_TRACE_DEBUG
+      - DD_ENV=peertesting-java
+      - DD_SERVICE=${DD_SERVICE:-peertesting-java-service}
+      - DD_TRACE_DEBUG=${DD_TRACE_DEBUG:-true}
       - DD_APPSEC_HTTP_BLOCKED_TEMPLATE_HTML
       - DD_APPSEC_HTTP_BLOCKED_TEMPLATE_JSON
     depends_on:
       - "agent"
   agent:
-    image: datadog/agent:7.39.0
+    image: datadog/agent:7.39.2
     environment:
       - DD_API_KEY
-      - DD_SITE=datad0g.com
-      - DD_ENV=peertesting-blocking-java
+      - DD_SITE
+      - DD_ENV=peertesting-java
       - DD_REMOTE_CONFIGURATION_ENABLED=true
       - DD_REMOTE_CONFIGURATION_REFRESH_INTERVAL=5s
       - DD_REMOTE_CONFIGURATION_KEY

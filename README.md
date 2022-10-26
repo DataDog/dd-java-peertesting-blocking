@@ -29,7 +29,7 @@ This option is recommended when you have both vault and appgate.
 
 The file `docker-compose.yml` can be used with your vault's variables set first.
 
-> **Tip!** For Unix-like systems, you can just run `source setup_env.sh` in your terminal, and skip the rest of the section.
+> **Tip!** For Unix-like systems, you can just run `source setup_staging_env.sh` in your terminal, and skip the rest of the section.
 
 Set these environment variables first:
 - Unix:

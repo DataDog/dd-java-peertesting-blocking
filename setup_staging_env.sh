@@ -1,3 +1,4 @@
+export DD_SITE=datad0g.com
 export VAULT_ADDR=https://vault.us1.staging.dog
 vault login -method=oidc
 export DD_API_KEY=$(vault kv get -format json applications/datadog-agent/shared/agent_api_key | jq -r .data.value)
